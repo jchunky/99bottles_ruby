@@ -1,3 +1,29 @@
+require "active_support/all"
+
+class BottleNumber < Struct.new(:number)
+  def self.for(number)
+    ("BottleNumber#{number}".safe_constantize || BottleNumber).new(number)
+  end
+
+  def action = "Take #{pronoun} down and pass it around"
+  def successor = BottleNumber.for(number - 1)
+  def quantity = number.to_s
+  def container = "bottles"
+  def pronoun = "one"
+  def to_s = "#{quantity} #{container}"
+end
+
+class BottleNumber0 < BottleNumber
+  def action = "Go to the store and buy some more"
+  def successor = BottleNumber.for(99)
+  def quantity = "no more"
+end
+
+class BottleNumber1 < BottleNumber
+  def container = "bottle"
+  def pronoun = "it"
+end
+
 class Bottles
   def song
     verses(99, 0)
@@ -8,27 +34,9 @@ class Bottles
   end
 
   def verse(number)
-    "#{quantity(number)} #{container(number)} of beer on the wall, #{quantity(number)} #{container(number)} of beer.\n".capitalize +
-      "#{action(number)}, #{quantity(successor(number))} #{container(successor(number))} of beer on the wall.\n"
-  end
+    number = BottleNumber.for(number)
 
-  def action(number)
-    number == 0 ? "Go to the store and buy some more" : "Take #{pronoun(number)} down and pass it around"
-  end
-
-  def successor(number)
-    number == 0 ? 99 : number - 1
-  end
-
-  def quantity(number)
-    number == 0 ? "no more" : number.to_s
-  end
-
-  def container(number)
-    number == 1 ? "bottle" : "bottles"
-  end
-
-  def pronoun(number)
-    number == 1 ? "it" : "one"
+    "#{number} of beer on the wall, #{number} of beer.\n".capitalize +
+      "#{number.action}, #{number.successor} of beer on the wall.\n"
   end
 end
