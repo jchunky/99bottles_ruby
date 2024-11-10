@@ -1,9 +1,7 @@
 require "active_support/all"
 
 class BottleNumber < Struct.new(:number)
-  def self.for(number)
-    ("BottleNumber#{number}".safe_constantize || BottleNumber).new(number)
-  end
+  def self.for(number) = ("BottleNumber#{number}".safe_constantize || BottleNumber).new(number)
 
   def action = "Take #{pronoun} down and pass it around"
   def successor = BottleNumber.for(number - 1)
@@ -25,13 +23,8 @@ class BottleNumber1 < BottleNumber
 end
 
 class Bottles
-  def song
-    verses(99, 0)
-  end
-
-  def verses(first, last)
-    first.downto(last).map { verse(_1) }.join("\n")
-  end
+  def song = verses(99, 0)
+  def verses(first, last) = first.downto(last).map { verse(_1) }.join("\n")
 
   def verse(number)
     number = BottleNumber.for(number)

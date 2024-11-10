@@ -1,5 +1,8 @@
 require "minitest/autorun"
+require "minitest/reporters"
 require_relative "../lib/bottles"
+
+Minitest::Reporters.use!
 
 class BottlesTest < Minitest::Test
   def test_the_first_verse
